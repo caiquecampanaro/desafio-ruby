@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistema para Solicitação de Livros - SiSoLi</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+
+    <script>
+      function startTimer(duration, display) {
+        var timer = duration,
+          minutes,
+          seconds
+        setInterval(function () {
+          minutes = parseInt(timer / 60, 10)
+          seconds = parseInt(timer % 60, 10)
+
+          minutes = minutes < 10 ? '0' + minutes : minutes
+          seconds = seconds < 10 ? '0' + seconds : seconds
+
+          display.textContent = minutes + ':' + seconds
+
+          if (--timer < 0) {
+            document.getElementById('solicitarLivroForm').reset()
+            document
+              .getElementById('solicitarLivroForm')
+              .classList.add('disabled')
+            document.getElementById('timer').textContent = 'Tempo esgotado!'
+            clearInterval(intervalId)
+          }
+        }, 1000)
+      }
+
+      window.onload = function () {
+        var duration = 60 * 60
+        var display = document.querySelector('#timer')
+        startTimer(duration, display)
+      }
+      document
+          .querySelector('#form-control')
+          .addEventListener('submit', function (event) {
+            event.preventDefault() // Previne o envio do formulário
+
+            // Recupera os valores dos campos do formulário
+            var tipoVinculo = document.querySelector('#tipo-vinculo').value
+            var titulo = document.querySelector('#titulo').value
+            var autor = document.querySelector('#autor').value
+            var edicao = document.querySelector('#edicao').value
+            var issn = document.querySelector('#issn').value
+            var anoPublicacao = document.querySelector('#ano-publicacao').value
+            var editora = document.querySelector('#editora').value
+
+            // Cria uma nova linha na tabela de solicitação com os valores dos campos do formulário
+            var tableBody = document.querySelector('#tabela-solicitacao')
+            var newRow = tableBody.insertRow(-1)
+            var newCellTipoVinculo = newRow.insertCell(0)
+            var newCellTitulo = newRow.insertCell(1)
+            var newCellAutor = newRow.insertCell(2)
+            var newCellEdicao = newRow.insertCell(3)
+            var newCellIssn = newRow.insertCell(4)
+            var newCellAnoPublicacao = newRow.insertCell(5)
+            var newCellEditora = newRow.insertCell(6)
+            newCellTipoVinculo.innerHTML = tipoVinculo
+            newCellTitulo.innerHTML = titulo
+            newCellAutor.innerHTML = autor
+            newCellEdicao.innerHTML = edicao
+            newCellIssn.innerHTML = issn
+            newCellAnoPublicacao.innerHTML = anoPublicacao
+            newCellEditora.innerHTML = editora
+
+            // Limpa os campos do formulário
+            document.querySelector('#form-control').reset()
+          })
+    </script>
+  </head>
+  <body>
+    <nav class="navbar navbar-dark bg-dark justify-content-center">
+      <div class="justify-content-center">
+        <a class="navbar-brand" href="#">
+          <h1>Sistema para Solicitação de Livros - SiSoLi</h1></a
+        >
+      </div>
+    </nav>
+    <div class="container mt-5">
+      <div class="row justify-content-md-center"></div>
+
+      <div class="container text-center mb-5">
+        <div class="row">
+          <div class="col-sm-8"><h2>Solicitação de livros</h2></div>
+          <button class="btn btn-dark justify-content-md-center">
+            <h5 class="col-lg-9" id="timer"></h5>
+          </button>
+        </div>
+      </div>
+
+      <form id="form-control" class="row col">
+        <div class="col-md-5">
+          <label for="tipo-vinculo"><h4>Tipo de vínculo*</h4></label>
+          <select id="tipo-vinculo" class="form-control" required>
+            <option value="">Selecione</option>
+            <option value="docente">Docente</option>
+            <option value="discente">Discente</option>
+            <option value="tecnico">Técnico</option>
+          </select>
+        </div>
+        <div class="form-group col-md-5">
+          <label for="titulo"><h4>Título*</h4></label>
+          <input type="text" id="titulo" class="form-control" required />
+        </div>
+        <div class="form-group col-md-5">
+          <label for="autor"><h4>Autor*</h4></label>
+          <input type="text" id="autor" class="form-control" required />
+        </div>
+        <div class="form-group col-md-5">
+          <label for="edicao"><h4>Edição</h4></label>
+          <input type="number" id="edicao" class="form-control" />
+        </div>
+        <div class="form-group col-md-5">
+          <label for="issn"><h4>ISSN</h4></label>
+          <input type="number" id="issn" class="form-control" />
+        </div>
+        <div class="form-group col-md-5">
+          <label for="ano-publicacao"><h4>Ano de publicação*</h4></label>
+          <input
+            type="number"
+            id="ano-publicacao"
+            class="form-control"
+            required
+            min="1900"
+            max="2019"
+          />
+        </div>
+        <div class="form-group col-md-5">
+          <label for="editora"><h4>Editora</h4></label>
+          <input type="text" id="editora" class="form-control" />
+        </div>
+
+        <div class="container text-start">
+          <!-- Botão para solicitar livro -->
+          <button type="submit" id="solicitarLivroForm" class="btn btn-primary">
+            Solicitar livro
+          </button>
+        </div>
+      </form>
+      <!-- Tabela de solicitação -->
+      <table id="tabela-solicitacao" class="table mt-5">
+        <thead>
+          <tr>
+            <th scope="col">Tipo de vínculo</th>
+            <th scope="col">Título</th>
+            <th scope="col">Autor</th>
+            <th scope="col">Edição</th>
+            <th scope="col">ISSN</th>
+            <th scope="col">Ano de publicação</th>
+            <th scope="col">Editora</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+  </body>
+</html>
